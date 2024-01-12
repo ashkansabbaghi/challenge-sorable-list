@@ -9,16 +9,16 @@
                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 
                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                         dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:opacity-30"
-                        :placeholder="`skill ${iNum + 1}`" :disabled="checkStepDisable(num)"
-                        @keyup.enter.prevent="setSelectedSkill()" @blur="setSelectedSkill"
-                        @click.prevent="selectInput(num)">
+                        :placeholder="`skill ${iNum + 1}`" :disabled="checkStepDisable(num)" autocomplete="off"
+                        @keyup.enter.prevent="setSelectedSkill()" @keydown.tab="isSuggestionSkill.fill(false)" @click.prevent="selectInput(num)"
+                        @input="openSuggestionDropDown(iNum)">
                     <XMarkIcon class="w-4 absolute top-[30%] right-3 dark:stroke-white cursor-pointer"
                         @click.prevent="skillsModel[num] = ''" />
-                    <div v-if="isSuggestionSkill[iNum]" class="z-10 shadow w-full absolute right-0">
+                    <div v-if="isSuggestionSkill[iNum]" class="z-10 shadow w-full absolute right-0 h-[15rem] overflow-auto">
                         <ul>
-                            <li v-for="(skill, iSkill) in suggestSkills" :key="iSkill" class="cursor-pointer bg-white p-2 text-black border-b border-slate-200 
-                                dark:bg-slate-600 dark:text-slate-200 dark:border-slate-700"
-                                @click.prevent="setSuggestionUser(sugUser?.id, sugUser?.name)">
+                            <li v-for="(skill, iSkill) in filtersSuggestion" :key="iSkill" class="cursor-pointer bg-white p-2 text-black border-b border-slate-200 
+                                dark:bg-slate-600 dark:text-slate-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700"
+                                @click.prevent="setSuggestSideSkill(skill)">
                                 <p class="ms-2 text-sm font-medium cursor-pointer [&>*]:cursor-pointer">
                                     <span class="text-gray-500 dark:text-slate-100 text-xs"> {{ skill }}</span>
                                 </p>
@@ -46,23 +46,25 @@
 
 <script setup>
 import { XMarkIcon } from '@heroicons/vue/24/solid'
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import skillsData from "./../data/Skills.json";
 
 const numInputSkill = 5
 const isSuggestionSkill = ref([])
-const suggestSkills = skillsData?.skills
-// const selectedSkill = ref([])
 const skillsModel = ref([])
 const refInput = ref([])
 const currInput = ref(null)
+const currValueInput = ref('')
+
+const suggestSkills = computed(() => skillsData?.skills || []);
+
+const filtersSuggestion = computed(() => {
+    console.log(suggestSkills.value, currValueInput.value, suggestSkills.value.filter(skill => skill.includes(currValueInput.value)));
+    return suggestSkills.value.filter(skill => skill.toLowerCase().includes(currValueInput.value.toLowerCase()));
+});
 
 
 // functions
-const setSelectedSkill = () => {
-    // console.log('handlerSkills'  , refInput.value);
-}
-
 const checkStepDisable = (num) => {
     if (num === 1) return false;
     return (!skillsModel.value[num - 1]) && (!skillsModel.value[num])
@@ -76,11 +78,19 @@ const setSuggestSideSkill = (skill) => {
     if (!currInput.value) return
     skillsModel.value[currInput.value] = skill
     const targetInput = refInput.value[currInput.value]
-    if (targetInput) targetInput.focus() 
+    if (targetInput) targetInput.focus()
     currInput.value++
-
-
+    isSuggestionSkill.value.fill(false)
 }
+
+const openSuggestionDropDown = (index) => {
+    const nextSkill = skillsModel.value[index + 1];
+    currValueInput.value = nextSkill;
+
+    isSuggestionSkill.value[index] = nextSkill.length >= 1 ? true : false;
+};
+
+
 </script>
 
 <style lang="scss" scoped></style>
