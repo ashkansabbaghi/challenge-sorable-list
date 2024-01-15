@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-col items-center justify-center w-full h-full gap-y-8">
-        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 ">Select Your  Top 5 Tech Skills</h1>
-        <div class="grid mb-8 border border-gray-200 rounded-lg shadow-sm w-[70%]
+    <div class="flex flex-col items-center justify-center w-full h-full p-5">
+        <h1 class="md:text-3xl text-xl font-bold text-gray-800 dark:text-gray-200 ">Select Your  Top 5 Tech Skills</h1>
+        <div class="grid m-8 border border-gray-200 rounded-lg shadow-sm md:w-full max-w-[900px]
             dark:border-gray-700 md:mb-12 md:grid-cols-2 bg-white dark:bg-gray-800">
             <figure class="flex flex-col gap-y-5 items-center justify-center p-8 text-center bg-white border-b border-gray-200 rounded-t-lg
                 md:rounded-t-none md:rounded-ss-lg md:border-e dark:bg-gray-800 dark:border-gray-700">
@@ -28,8 +28,8 @@
                     </div>
                 </div>
             </figure>
-            <figure class="flex flex-col items-start justify-start p-8 text-center bg-white border-b border-gray-200 
-                md:rounded-se-lg dark:bg-gray-800 dark:border-gray-700">
+            <figure class="flex-col items-start justify-start p-8 text-center bg-white border-b border-gray-200 
+                md:rounded-se-lg dark:bg-gray-800 dark:border-gray-700 md:flex hidden">
 
                 <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Suggested Skills</h2>
                 <ul v-for="(skill, iSkill) in suggestSkills" :key="iSkill"
