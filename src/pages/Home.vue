@@ -1,8 +1,9 @@
 <template>
-    <div class="flex items-center justify-evenly w-full h-full">
+    <div class="flex flex-col items-center justify-center w-full h-full gap-y-8">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200 ">Select Your  Top 5 Tech Skills</h1>
         <div class="grid mb-8 border border-gray-200 rounded-lg shadow-sm w-[70%]
             dark:border-gray-700 md:mb-12 md:grid-cols-2 bg-white dark:bg-gray-800">
-            <figure class="flex flex-col gap-y-3 items-center justify-center p-8 text-center bg-white border-b border-gray-200 rounded-t-lg
+            <figure class="flex flex-col gap-y-5 items-center justify-center p-8 text-center bg-white border-b border-gray-200 rounded-t-lg
                 md:rounded-t-none md:rounded-ss-lg md:border-e dark:bg-gray-800 dark:border-gray-700">
                 <div v-for="(num, iNum) in numInputSkill" :key="iNum" class="relative">
                     <input :id="`id-${num}`" ref="refInput" v-model="skillsModel[num]" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
@@ -27,7 +28,7 @@
                     </div>
                 </div>
             </figure>
-            <figure class="flex flex-col items-start justify-center p-8 text-center bg-white border-b border-gray-200 
+            <figure class="flex flex-col items-start justify-start p-8 text-center bg-white border-b border-gray-200 
                 md:rounded-se-lg dark:bg-gray-800 dark:border-gray-700">
 
                 <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Suggested Skills</h2>
@@ -40,7 +41,6 @@
 
             </figure>
         </div>
-
     </div>
 </template>
 
@@ -59,7 +59,6 @@ const currValueInput = ref('')
 const suggestSkills = computed(() => skillsData?.skills || []);
 
 const filtersSuggestion = computed(() => {
-    console.log(suggestSkills.value, currValueInput.value, suggestSkills.value.filter(skill => skill.includes(currValueInput.value)));
     return suggestSkills.value.filter(skill => skill.toLowerCase().includes(currValueInput.value.toLowerCase()));
 });
 
